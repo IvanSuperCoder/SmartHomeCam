@@ -10,15 +10,14 @@ Face and object recognition using Artificial Intelligence (AI) and Internet Prot
 
 ### Installation
 
-In order to test the script please run the following commands:
+Create a virtual environment in the workspace folder.
+Run the following commands:
 
 ```sh
-# install danger-js
-npm install -g danger
-# install danger-python
-pip install danger-python
-# run danger-python
-danger-python pr https://github.com/microsoft/TypeScript/pull/34806
+# create virtual environment 
+py -3 -m venv .venv
+# activate virtual environment 
+./.venv/Scripts/Activate.ps1
 ```
 
 
