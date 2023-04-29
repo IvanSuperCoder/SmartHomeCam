@@ -4,8 +4,6 @@ Face and object recognition using Artificial Intelligence (AI) and Internet Prot
 
 ### Requirements
 
-Running `danger-python` requires:
-
 * Python 3.11 (tested under Python 3.11.3)
 
 :warning: To verify that you've installed Python successfully on your machine, run `py -3 --version`.
