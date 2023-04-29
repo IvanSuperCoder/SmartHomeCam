@@ -20,15 +20,11 @@ py -3 -m venv .venv
 ./.venv/Scripts/Activate.ps1
 ```
 
+Install all required modules.
 
-
-
-py -m venv .venv
-
-./.venv/Scripts/Activate.ps1
-
-
-python 3.11.3
+```sh
+pip install -r requirements.txt
+```
 
 
 
