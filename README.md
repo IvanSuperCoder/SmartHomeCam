@@ -1,6 +1,6 @@
 # SmartHomeCam
 
-Face and object recognition using Python AI and IP Cams
+Face and object recognition using Artificial Intelligence (AI) and Internet Protocol (IP) cameras.
 
 ### Requirements
 
