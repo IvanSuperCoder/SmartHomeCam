@@ -22,7 +22,7 @@ If it returns `Restricted` then run the following command:
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
 ```
 
-Create a virtual environment in the workspace folder.
+Next, сreate a virtual environment in the workspace folder.
 Run the following commands:
 
 ```sh
@@ -32,25 +32,10 @@ py -3 -m venv .venv
 ./.venv/Scripts/Activate.ps1
 ```
 
-Install all required modules:
+Finally, install all required modules:
 
 ```sh
 pip install -r requirements.txt
 ```
 
-:warning: To verify that you've installed Python successfully on your machine, run `py -3 --version`.
-
-
-
-\.venv\Scripts\Activate.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at 
-https:/go.microsoft.com/fwlink/?LinkID=135170.
-
-if Get-ExecutionPolicy - RestrictedSet
-
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
-
-
-
-pip freeze > requirements.txt
-
-pip install -r requirements.txt
+:warning: Don't forget to update the requirements file after installing a new module in the project. Do it by running the following command: `pip freeze > requirements.txt`.
