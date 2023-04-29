@@ -10,6 +10,18 @@ Face and object recognition using Artificial Intelligence (AI) and Internet Prot
 
 ### Installation
 
+First of all, check your PowerShell execution policy:
+
+```sh
+Get-ExecutionPolicy
+```
+
+If it returns `Restricted` then run the following command:
+
+```sh
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
+```
+
 Create a virtual environment in the workspace folder.
 Run the following commands:
 
@@ -20,11 +32,13 @@ py -3 -m venv .venv
 ./.venv/Scripts/Activate.ps1
 ```
 
-Install all required modules.
+Install all required modules:
 
 ```sh
 pip install -r requirements.txt
 ```
+
+:warning: To verify that you've installed Python successfully on your machine, run `py -3 --version`.
 
 
 
