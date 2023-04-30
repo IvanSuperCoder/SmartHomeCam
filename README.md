@@ -38,9 +38,4 @@ Finally, install all required modules:
 pip install -r requirements.txt
 ```
 
-:warning: Don't forget to update the requirements file after installing a new module in the project.
-Do it by running the following command:
-
-```sh
-pip freeze > requirements.txt
-```
+:warning: Don't forget to update the requirements file after installing a new module in the project. Do it by running the following command: `pip freeze > requirements.txt`.
