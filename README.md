@@ -22,7 +22,7 @@ If it returns `Restricted` then run the following command:
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
 ```
 
-Next, сreate a virtual environment in the workspace folder.
+Next, сreate a Python virtual environment in the workspace folder.
 Run the following commands:
 
 ```sh
@@ -38,4 +38,5 @@ Finally, install all required modules:
 pip install -r requirements.txt
 ```
 
-:warning: Don't forget to update the requirements file after installing a new module in the project. Do it by running the following command: `pip freeze > requirements.txt`.
+:warning: Don't forget to update the requirements file after installing a new module in the project.
+Do it by running the following command: `pip freeze > requirements.txt`.
