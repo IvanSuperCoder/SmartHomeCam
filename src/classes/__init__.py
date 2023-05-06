@@ -1,1 +1,1 @@
-from src.classes.pubsub import PubSub
+from classes.broadcaster import Broadcaster

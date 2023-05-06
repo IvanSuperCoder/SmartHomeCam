@@ -2,7 +2,7 @@ from multiprocessing import Pipe
 from multiprocessing.connection import PipeConnection
 
 
-class PubSub:
+class Broadcaster:
   _consumers: set[tuple[PipeConnection, PipeConnection]] = set()
   
   def send(self, data):
@@ -18,10 +18,10 @@ class PubSub:
     
     return consumer[0]
   
-  def unsubscribe(self, connection: PipeConnection):
+  def unsubscribe(self, receiver: PipeConnection):
     for consumer in self._consumers:
-      if consumer[0] == connection:
-        # remove a consumer from the set of active consumers
+      if consumer[0] == receiver:
+        # remove the consumer from the set of active consumers
         self._consumers.remove(consumer)
         
         return
