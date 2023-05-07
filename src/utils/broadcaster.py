@@ -1,29 +1,35 @@
 from multiprocessing import Pipe
 from multiprocessing.connection import PipeConnection
-from typing import Any, NewType
+from typing import Any
 
-TConsumer = NewType('Consumer', tuple[PipeConnection, PipeConnection])
+
+Consumer = tuple[PipeConnection, PipeConnection]
 
 class Broadcaster:
-  _consumers: set[TConsumer] = set()
+  _consumers: set[Consumer] = set()
   
   def send(self, data: Any):
     for consumer in self._consumers:
-      # send data for each consumer
-      consumer[1].send(data)
+      # send data for each active consumer
+      if not consumer[0].closed:
+        consumer[1].send(data)
   
   def subscribe(self) -> PipeConnection:
     # create a new consumer
-    consumer: TConsumer = TConsumer(Pipe(duplex=False))
-    # store the consumer in the set of active consumers
+    consumer: Consumer = Pipe(duplex = False)
+    # store the consumer on the stack
     self._consumers.add(consumer)
     
     return consumer[0]
   
   def unsubscribe(self, receiver: PipeConnection):
+    # close active connection
+    if not receiver.closed:
+      receiver.close()
+    
     for consumer in self._consumers:
       if consumer[0] == receiver:
-        # remove the consumer from the set of active consumers
+        # remove consumer from the stack
         self._consumers.remove(consumer)
         
         return
