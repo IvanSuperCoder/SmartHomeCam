@@ -14,7 +14,7 @@ class FrameData:
   pts: int
   
   @classmethod
-  def parse(cls, frame: av.VideoFrame, format: str = 'bgr24'):
+  def parse(cls, frame: av.VideoFrame, format: str = 'bgr24') -> Self:
     return cls(
       content = frame.to_ndarray(format = format),
       format = frame.format if not format else format,
@@ -23,8 +23,8 @@ class FrameData:
     )
   
   @classmethod
-  def pack(cls, frame_data: Self):
-    frame = av.VideoFrame.from_ndarray(frame_data.content, format = frame_data.format)
+  def pack(cls, frame_data: Self) -> av.VideoFrame:
+    frame: av.VideoFrame = av.VideoFrame.from_ndarray(frame_data.content, format = frame_data.format)
     
     # set the duration of one tick of the timescale
     frame.time_base = frame_data.time_base
