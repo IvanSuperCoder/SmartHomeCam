@@ -7,3 +7,8 @@ web:
 
 logger:
   path: .logs
+
+streams:
+  - name: Garage Front Cam
+    sorce: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4
+    timeout: 15
