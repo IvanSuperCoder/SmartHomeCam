@@ -1,5 +1,7 @@
-import json
-from typing import Any
+import os
+from typing import Any, Self
+
+import yaml
 
 from utils.property import deep_value
 
@@ -7,12 +9,14 @@ from utils.property import deep_value
 class Config:
   _data: dict[str, Any] = {}
   
-  @staticmethod
-  def load(file: str):
-    # load configuration file
-    with open(file, 'r') as fp:
-      Config._data = dict(json.load(fp))
+  is_prod: bool = os.environ['ENV'] == 'prod'
   
   @staticmethod
-  def get(path: str) -> Any:
-    return deep_value(Config._data, path)
+  def init():
+    # load configuration file
+    with open(f"config.{os.environ['ENV']}.yaml", 'r') as fp:
+      Config._data = yaml.load(fp, yaml.Loader)
+  
+  @classmethod
+  def get(cls: Self, path: str) -> Any:
+    return deep_value(cls._data, path)
