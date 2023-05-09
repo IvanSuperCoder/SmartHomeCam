@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 
-from config import Config
+from src.config import Config
 
 
 class Logger:
@@ -27,18 +27,21 @@ class Logger:
       encoding='utf-8'
     )
     
-    # set logging level
     level: int = logging.INFO if Config.is_prod else logging.DEBUG
     
+    # set logging level for handlers
     file_handler.setLevel(level)
     stream_handler.setLevel(level)
     
-    # set logging formats
+    # set logging level for the logger
+    Logger._logger.setLevel(level)
+    
     formatter: logging.Formatter = logging.Formatter(
       fmt='[%(asctime)s] %(levelname)s: %(message)s',
       datefmt='%Y-%m-%dT%H:%M:%S%z'
     )
     
+    # set logging formats for handlers
     file_handler.setFormatter(formatter)
     stream_handler.setFormatter(formatter)
     
