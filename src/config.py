@@ -18,5 +18,5 @@ class Config:
       Config._data = yaml.load(fp, yaml.Loader)
   
   @classmethod
-  def get(cls: Self, path: str) -> Any:
+  def get(cls, path: str) -> Any:
     return deep_value(cls._data, path)
