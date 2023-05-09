@@ -1,5 +1,5 @@
 import os
-from typing import Any, Self
+from typing import Any
 
 import yaml
 

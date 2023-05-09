@@ -7,8 +7,24 @@ __pycache__/
 *$py.class
 
 # Environments
+.env
 .venv/
 
 # Logs
 .logs/
 *.log
+
+# Production
+.prod/
+*.prod.*
+
+# SSL Certificate
+*.pem
+*.crt
+*.cer
+*.key
+*.p7b
+*.p7c
+*.der
+*.pfx
+*.p12
