@@ -1,11 +1,13 @@
-from typing import Any
+from typing import Any, Generic, TypeVar
 
 import yaml
 
 from src.utils.property import deep_value
 
 
-class Config:
+T = TypeVar('T')
+
+class Config(Generic[T]):
   _data: dict[str, Any] = {}
   _is_prod: bool = None
   
@@ -23,5 +25,5 @@ class Config:
       Config._data = yaml.load(fp, yaml.Loader)
   
   @classmethod
-  def get(cls, path: str) -> Any:
+  def get(cls, path: str) -> T | None:
     return deep_value(cls._data, path)

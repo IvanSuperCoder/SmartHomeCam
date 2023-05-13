@@ -6,7 +6,7 @@ import sys
 from src.config import Config
 
 
-DEFAULT_PATH = '.logs'
+DEFAULT_PATH: str = '.logs'
 
 class Logger:
   _logger: logging.Logger = logging.getLogger()
@@ -18,8 +18,7 @@ class Logger:
   
   @staticmethod
   def init():
-    # get logs folder path
-    path: str = Config.get('logger.path') or DEFAULT_PATH
+    path: str = Config[str].get('logger.path') or DEFAULT_PATH
     
     # create output folder
     if not os.path.exists(path):
