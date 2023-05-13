@@ -7,7 +7,12 @@ from src.utils.property import deep_value
 
 class Config:
   _data: dict[str, Any] = {}
-  _is_prod: bool = False
+  _is_prod: bool = None
+  
+  @classmethod
+  @property
+  def is_prod(cls) -> bool:
+    return cls._is_prod
   
   @staticmethod
   def init(is_prod: bool = False):
@@ -20,8 +25,3 @@ class Config:
   @classmethod
   def get(cls, path: str) -> Any:
     return deep_value(cls._data, path)
-  
-  @classmethod
-  @property
-  def is_prod(cls) -> bool:
-    return cls._is_prod
