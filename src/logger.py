@@ -6,13 +6,20 @@ import sys
 from src.config import Config
 
 
+DEFAULT_PATH = '.logs'
+
 class Logger:
   _logger: logging.Logger = logging.getLogger()
+  
+  @classmethod
+  @property
+  def log(cls) -> logging.Logger:
+    return cls._logger
   
   @staticmethod
   def init():
     # get logs folder path
-    path: str = Config.get('logger.path') or '.logs'
+    path: str = Config.get('logger.path') or DEFAULT_PATH
     
     # create output folder
     if not os.path.exists(path):
@@ -51,8 +58,3 @@ class Logger:
     if not Config.is_prod:
       # add stream handler to the logger
       Logger._logger.addHandler(stream_handler)
-  
-  @classmethod
-  @property
-  def log(cls) -> logging.Logger:
-    return cls._logger
