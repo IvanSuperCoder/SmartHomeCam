@@ -11,5 +11,7 @@ def deep_value(data: dict[str, Any], path: str) -> Any:
         value = value[key]
       else:
         return None
+    else:
+      return None
   
   return value

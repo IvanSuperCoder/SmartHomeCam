@@ -16,7 +16,7 @@ class Broadcaster:
   
   def subscribe(self) -> PipeConnection:
     # create a new consumer
-    consumer: Consumer = Pipe(duplex = False)
+    consumer: Consumer = Pipe(duplex=False)
     # store the consumer on the stack
     self._consumers.add(consumer)
     
@@ -33,3 +33,12 @@ class Broadcaster:
         self._consumers.remove(consumer)
         
         return
+  
+  def reset(self):
+    for consumer in self._consumers:
+      if not consumer[0].closed:
+        # close all active connections
+        consumer[0].close()
+    
+    # reset consumer stack
+    self._consumers = set()

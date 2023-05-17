@@ -6,6 +6,8 @@ import av
 import numpy
 
 
+RGB24: str = 'rgb24'
+
 @dataclass
 class FrameData:
   content: numpy.ndarray
@@ -14,21 +16,21 @@ class FrameData:
   pts: int
   
   @classmethod
-  def parse(cls, frame: av.VideoFrame, format: str = 'bgr24') -> Self:
+  def parse(cls, frame: av.VideoFrame, format: str = RGB24) -> Self:
     return cls(
-      content = frame.to_ndarray(format = format),
-      format = frame.format if not format else format,
-      time_base = frame.time_base,
-      pts = frame.pts
+      content=frame.to_ndarray(format=format),
+      format=frame.format if not format else format,
+      time_base=frame.time_base,
+      pts=frame.pts
     )
   
   @classmethod
-  def pack(cls, frame_data: Self) -> av.VideoFrame:
-    frame: av.VideoFrame = av.VideoFrame.from_ndarray(frame_data.content, format = frame_data.format)
+  def pack(cls, data: Self) -> av.VideoFrame:
+    frame: av.VideoFrame = av.VideoFrame.from_ndarray(data.content, format=data.format)
     
-    # set the duration of one tick of the timescale
-    frame.time_base = frame_data.time_base
-    # set frame presentation time stamp
-    frame.pts = frame_data.pts
+    # set the tick duration of the timescale
+    frame.time_base = data.time_base
+    # set frame presentation timestamp
+    frame.pts = data.pts
     
     return frame
