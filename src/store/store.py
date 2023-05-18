@@ -7,11 +7,6 @@ T = TypeVar('T')
 class Store(ABC, Generic[T]):
   _data: dict[str, T]
   
-  @property
-  @classmethod
-  def data(cls) -> dict[str, T]:
-    return cls._data
-  
   @classmethod
   def add(cls, key: str, value: T):
     cls._data[key] = value
@@ -23,6 +18,10 @@ class Store(ABC, Generic[T]):
   @classmethod
   def remove(cls, key: str):
     cls._data.pop(key)
+  
+  @classmethod
+  def items(cls) -> list[tuple[str, T]]:
+    return cls._data.items()
   
   @classmethod
   def reset(cls):
