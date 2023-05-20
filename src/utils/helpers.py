@@ -1,9 +1,8 @@
 from typing import Any
 
 
-# get deep value from dictionary by passing path to it
-def get_value(data: dict[str, Any], path: str) -> Any:
-  value: Any = data
+def deep_value(obj: dict[str, Any], path: str) -> Any:
+  value: Any = obj
   
   for key in path.split('.'):
     if isinstance(value, dict):

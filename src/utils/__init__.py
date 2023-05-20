@@ -1,2 +1,2 @@
 from src.utils.broadcaster import Broadcaster
-from src.utils.dictionary import get_value
+from src.utils.helpers import deep_value
