@@ -3,7 +3,7 @@ from typing import Any, Generic, Optional, TypeVar
 
 import yaml
 
-from src.utils.helpers import deep_value
+from src.utils import deep_value
 
 
 T = TypeVar('T')
@@ -24,7 +24,7 @@ class Config(Generic[T]):
     # declare an argument for the prod environment switch
     argument_parser.add_argument('--prod', default=False, action=BooleanOptionalAction)
     
-    # extract command-line arguments
+    # parse command-line arguments
     arguments: dict[str, Any] = vars(argument_parser.parse_args())
     
     Config._is_prod = arguments['prod']

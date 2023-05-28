@@ -1,6 +1,6 @@
 from threading import Thread
 
-from src.store.store import Store
+from .store import Store
 
 
 class ThreadStore(Store[Thread]):
