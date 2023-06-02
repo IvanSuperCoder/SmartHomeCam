@@ -1,21 +1,15 @@
 from argparse import ArgumentParser, BooleanOptionalAction
 from typing import Any, Generic, Optional, TypeVar
 
+import pydash
 import yaml
-
-from src.utils import deep_value
 
 
 T = TypeVar('T')
 
 class Config(Generic[T]):
-  _data: dict[str, Any] = {}
-  _is_prod: bool = None
-  
-  @classmethod
-  @property
-  def is_prod(cls) -> bool:
-    return cls._is_prod
+  _config: dict[str, Any] = {}
+  _is_prod: bool = False
   
   @staticmethod
   def init():
@@ -31,8 +25,13 @@ class Config(Generic[T]):
     
     # load configuration file
     with open(f"config{'.prod' if Config._is_prod else ''}.yaml", 'r') as fp:
-      Config._data = yaml.load(fp, yaml.Loader)
+      Config._config = yaml.load(fp, yaml.Loader)
+  
+  @classmethod
+  @property
+  def is_prod(cls) -> bool:
+    return cls._is_prod
   
   @classmethod
   def get(cls, path: str) -> Optional[T]:
-    return deep_value(cls._data, path)
+    return pydash.get(cls._config, path, None)
