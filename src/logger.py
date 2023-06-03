@@ -1,59 +1,48 @@
-from datetime import datetime
 import logging
 import os
 import sys
+import time
+from typing import TextIO
 
 from src.config import Config
+from src.utils.literals import DEFAULT_LOGS_CMD, DEFAULT_LOGS_DIR
 
-
-DEFAULT_PATH: str = '.logs'
 
 class Logger:
-  _logger: logging.Logger = logging.getLogger()
+  _root: logging.Logger = logging.getLogger('root')
   
   @classmethod
   @property
-  def log(cls) -> logging.Logger:
-    return cls._logger
+  def root(cls) -> logging.Logger:
+    return cls._root
+  
+  @staticmethod
+  def get(name: str):
+    return logging.getLogger(name)
   
   @staticmethod
   def init():
-    path: str = Config[str].get('logger.path') or DEFAULT_PATH
+    dir: str = Config[str].get('advanced.logs.dir') or DEFAULT_LOGS_DIR
+    cmd: bool = Config[bool].get('advanced.logs.cmd') or DEFAULT_LOGS_CMD
     
-    # create output folder
-    if not os.path.exists(path):
-      os.makedirs(path)
+    if not os.path.exists(dir):
+      # create logs output folder
+      os.makedirs(dir)
     
     # initialize stream handler
-    stream_handler: logging.StreamHandler = logging.StreamHandler(stream=sys.stdout)
+    stream_handler: logging.StreamHandler[TextIO] = logging.StreamHandler(stream=sys.stdout)
     # initialize file handler
     file_handler: logging.FileHandler = logging.FileHandler(
-      filename=f"{path}/{datetime.today().strftime('%Y-%m-%dT%H%M%S.%f')}.log",
+      filename=f"{dir}/{time.strftime('%Y-%m-%dT%H-%M-%S')}.{'prod' if Config.is_prod else 'debug'}.log",
       mode='x',
       encoding='utf-8'
     )
     
-    level: int = logging.INFO if Config.is_prod else logging.DEBUG
-    
-    # set logging level for handlers
-    file_handler.setLevel(level)
-    stream_handler.setLevel(level)
-    
-    # set logging level for the logger
-    Logger._logger.setLevel(level)
-    
-    formatter: logging.Formatter = logging.Formatter(
-      fmt='[%(asctime)s] %(levelname)s: %(message)s',
-      datefmt='%Y-%m-%dT%H:%M:%S%z'
+    # set the basic logger configuration
+    logging.basicConfig(
+      format='[%(asctime)s] %(levelname)s (%(name)s): %(message)s',
+      datefmt='%Y-%m-%dT%H:%M:%S%z',
+      level=logging.INFO if Config.is_prod else logging.DEBUG,
+      handlers=[file_handler, stream_handler] if cmd else [file_handler],
+      force=True,
     )
-    
-    # set logging formats for handlers
-    file_handler.setFormatter(formatter)
-    stream_handler.setFormatter(formatter)
-    
-    # add file handler to the logger
-    Logger._logger.addHandler(file_handler)
-    
-    if not Config.is_prod:
-      # add stream handler to the logger
-      Logger._logger.addHandler(stream_handler)

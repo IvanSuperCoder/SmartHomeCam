@@ -11,6 +11,15 @@ class Config(Generic[T]):
   _config: dict[str, Any] = {}
   _is_prod: bool = False
   
+  @classmethod
+  @property
+  def is_prod(cls) -> bool:
+    return cls._is_prod
+  
+  @classmethod
+  def get(cls, path: str) -> Optional[T]:
+    return pydash.get(cls._config, path, None)
+  
   @staticmethod
   def init():
     # initialize command-line argument parser
@@ -26,12 +35,3 @@ class Config(Generic[T]):
     # load configuration file
     with open(f"config{'.prod' if Config._is_prod else ''}.yaml", 'r') as fp:
       Config._config = yaml.load(fp, yaml.Loader)
-  
-  @classmethod
-  @property
-  def is_prod(cls) -> bool:
-    return cls._is_prod
-  
-  @classmethod
-  def get(cls, path: str) -> Optional[T]:
-    return pydash.get(cls._config, path, None)
