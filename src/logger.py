@@ -1,7 +1,7 @@
 import logging
 import os
 import sys
-import time
+from time import strftime
 from typing import TextIO
 
 from src.config import Config
@@ -32,7 +32,7 @@ class Logger:
     stream_handler: logging.StreamHandler[TextIO] = logging.StreamHandler(stream=sys.stdout)
     # initialize file handler
     file_handler: logging.FileHandler = logging.FileHandler(
-      filename=f"{Logger._dir}/{time.strftime('%Y-%m-%dT%H-%M-%S')}.{'prod' if Config.is_prod else 'debug'}.log",
+      filename=f"{Logger._dir}/{strftime('%Y-%m-%dT%H-%M-%S')}.{'prod' if Config.is_prod else 'debug'}.log",
       mode='x',
       encoding='utf-8'
     )
