@@ -6,26 +6,19 @@ from typing import Any
 from src.config import Config
 from src.data import StreamData
 from src.logger import Logger
-from src.recorder import Recorder
-from src.store import RecorderStore, StreamStore, ThreadStore
+from src.store import StreamStore, ThreadStore
 from src.stream import Stream
 from src.web import Web
 
 
-def ask_exit(signum: int, frame: Any):
-  answer: str = input('Do you really want to exit? (y/n): ')
+def exit_handler(*_: tuple[Any, ...]):
+  response: str = input('Do you really want to exit? (y/n): ')
   
-  if answer.lower() != 'y':
+  if response.lower() != 'y':
     return
   
-  for item in RecorderStore.items():
-    # close all recording services
-    item[1].close()
-  
-  RecorderStore.reset()
-  
   for item in StreamStore.items():
-    # close all streaming services
+    # close all streams
     item[1].close()
   
   for item in ThreadStore.items():
@@ -39,40 +32,33 @@ def ask_exit(signum: int, frame: Any):
   
   exit(1)
 
-async def main(data: StreamData):
-  # initialize stream service
-  stream: Stream = Stream(data)
-  # initialize recorder service
-  recorder: Recorder = Recorder()
-  
-  StreamStore.add(data.id, stream)
-  RecorderStore.add(data.id, recorder)
-  
-  # listen to thread processes
-  await asyncio.gather(stream.start(), recorder.start())
-
 if __name__ == '__main__':
   # initialize exit handler
-  signal.signal(signal.SIGINT, ask_exit)
+  signal.signal(signal.SIGINT, exit_handler)
   # initialize configuration service
   Config.init()
   # initialize logger service
   Logger.init()
   
-  for stream_config in Config[list[dict[str, Any]]].get('streams'):
-    data: StreamData = StreamData.parse(stream_config)
+  for config in Config[list[dict[str, Any]]].get('streams'):
+    data: StreamData = StreamData.parse(config)
+    # initialize stream service
+    stream: Stream = Stream(data, [])
+    
+    StreamStore.add(data.id, stream)
     
     # initialize stream thread
     thread: Thread = Thread(
       target=asyncio.run,
       name=data.name,
-      args=(main(data),),
+      args=(stream.start(),),
       daemon=True
     )
-    # start stream thread
-    thread.start()
     
     ThreadStore.add(data.id, thread)
+    
+    # start stream thread
+    thread.start()
   
   # initialize web server
   web: Web = Web()

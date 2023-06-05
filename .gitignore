@@ -8,15 +8,19 @@ __pycache__/
 
 # Environments
 .env
-.venv/
+.venv
 
 # Logs
-.logs/
+.logs
 *.log
 
 # Production
-.prod/
+.prod
 *.prod.*
+
+# Store
+.records
+.DS_Store
 
 # SSL Certificate
 *.pem
